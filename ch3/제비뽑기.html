@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <p></p><button>뽑기</button>
+    <script>
+        let names = ['한솔', '나현', '문선', '준영'];
+
+        let index = 0;
+        let interval = setInterval(() => {
+            document.querySelector('p').innerText = names[index];
+            index = (index + 1) % 4;
+        }, 100);
+
+        document.querySelector('button').onclick = function() {
+            clearInterval(interval);
+        }
+    </script>
+</body>
+</html>
