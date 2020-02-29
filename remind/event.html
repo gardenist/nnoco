@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>Hello Event!</button>
+
+    <script>
+        let button = document.querySelector('button');
+
+        button.onclick = function(event) { // 이벤트 핸들러 / 리스너
+            console.log('클릭함 - onclick!');
+        }
+
+        button.addEventListener('myEvent', function() {
+            console.log('My Event 호출됨!');
+        });
+
+        button.addEventListener('click', function(event) {
+            console.log('클릭함 - addEventListener!');
+        });
+
+    </script>
+</body>
+</html>
