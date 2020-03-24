@@ -3,6 +3,12 @@ const fs = require('fs');
 const url = require('url');
 const qs = require('querystring');
 
+// "name=이준영;value=123"
+/* {
+    name: "이준영",
+    value: 123
+}
+*/
 const parseCookies = (cookie = '') => 
     cookie
         .split(';')
