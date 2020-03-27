@@ -1,0 +1,14 @@
+body {
+  background-color: #efefef;
+  padding: 10px;
+}
+.container {
+  background-color: white;
+  width: 800px;
+  height: 95vh;
+  overflow-y: scroll;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}

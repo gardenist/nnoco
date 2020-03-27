@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성</title>
+
+    <link rel="stylesheet" href="./stylesheets/style.css">
+
+    <style>
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+        }
+
+        textarea {
+            height: 300px;
+        }
+
+        button {
+            border-radius: 3px;
+            color: skyblue;
+            border: 1px solid skyblue;
+            font-size: 1.2em;
+            padding: 5px;
+            cursor: pointer;
+            font-weight: lighter;
+        }
+
+        button:hover {
+            color: white;
+            background-color: skyblue;
+            border: 1px solid lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="./posts.html">목록으로</a>
+        <h1>새 글 작성</h1>
+
+        <label for="title">제목</label>
+        <input id="title" maxlength="100">
+
+        <label for="content">내용</label>
+        <textarea id="content"></textarea>
+
+        <button id="write">작성하기</button>
+    </div>
+
+    <script>
+        document.getElementById('write').onclick = () => {
+            let title = document.getElementById('title');
+            let content = document.getElementById('content');
+
+            if(!title.value) {
+                alert('제목을 입력해 주세요.');
+                title.focus();
+                return;
+            }
+
+            if(!content.value) {
+                alert('내용을 입력해 주세요.');
+                content.focus();
+                return;
+            }
+
+            let post = {
+                authorId: 1,
+                title: title.value,
+                content: content.value
+            }
+
+            fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(post)
+            }).then(response => response.json())
+                .then(post => {
+                    location.href = './post.html?id=' + post.id
+                });
+        }
+    </script>
+</body>
+</html>
