@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="./modelement.js"></script>
+    <style>
+        label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <label for="username">User Name: <input id="username"></label>
+    <label for="password">Password: <input id="password" type="password"></label>
+    <label for="nickname">nickname: <input id="nickname"></label>
+
+    <script>
+        let model = {};
+        modelement(model, 'username', document.getElementById('username'));
+        modelement(model, 'password', document.getElementById('password'));
+        modelement(model, 'nickname', document.getElementById('nickname'));
+        
+    </script>
+</body>
+</html>
