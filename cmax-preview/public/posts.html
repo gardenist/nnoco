@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 목록</title>
+
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        th {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        tbody > tr {
+            border-bottom: 1px solid #efefef;
+        }
+
+        tbody > tr:last-child {
+            border-bottom: 1px solid black;
+        }
+
+        td {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        .write-link {
+            float: right;
+            font-size: 0.7em;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CMAX 게시판</h1>
+        <div>
+            <h2>
+                <span>게시글 목록</span>
+                <a href="/write.html" class="write-link">글쓰기</a></h2>
+        </div>
+        
+
+        <table>
+            <thead>
+                <tr>
+                    <th>아이디</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                </tr>
+            </thead>
+            <tbody id="postList">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function createRow(post) {
+            let tr = document.createElement('tr');
+
+            // 아이디
+            let tdId = document.createElement('td');
+            tdId.innerText = post.id;
+            
+            // 제목
+            let tdTitle = document.createElement('td');
+            let a = document.createElement('a');
+            a.href = '/post.html?id=' + post.id;
+            a.innerText = post.title;
+            tdTitle.appendChild(a);
+
+            // 닉네임
+            let tdNickname = document.createElement('td');
+            tdNickname.innerText = post.User.nickname;
+
+            // tr에 td 태그들 추가
+            tr.appendChild(tdId);
+            tr.appendChild(tdTitle);
+            tr.appendChild(tdNickname);
+
+            return tr;
+        }
+        fetch('/api/posts')
+            .then(res => res.json())
+            .then(posts => {
+                console.log(posts);
+                let postList = document.getElementById('postList');
+
+                posts.forEach(post => {
+                    postList.appendChild(createRow(post));
+                });
+            });
+    </script>
+</body>
+</html>
