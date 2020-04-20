@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>타이머</title>
+
+    <style>
+        label {
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <label for="iContent">
+            내용 <input id="iContent" placeholder="내용 입력">
+        </label>
+
+        <label for="iSeconds">
+            <input id="iSeconds" type="number" min="1" max="3600" value="10">초
+        </label>
+
+        <button id="btnAdd">추가</button>
+    </div>
+
+    <div>
+        <ul id="ulTimers">
+
+        </ul>
+    </div>
+
+    <script>
+        // 전역 변수를 사용하지 않기 위해 IIFE내에 코드 작성
+        (function() {
+            let ulTimers = document.getElementById('ulTimers');
+            let iContent = document.getElementById('iContent');
+            let iSeconds = document.getElementById('iSeconds');
+            let btnAdd = document.getElementById('btnAdd');
+
+            function checkNotEmpty(element, message) {
+                if(element.value === '') {
+                    console.error('값이 입력되지 않아 오류 발생 - ' + element.id);
+                    // 입력된 값이 없는 경우 예외 발생
+                    let error = Error(message);
+                    error.element = element;
+                    
+                    throw error;
+                }
+            }
+
+            function addTimeItem(seconds) {
+                console.log('타이머 아이템 표시를 위한 엘리먼트 생성 및 추가')
+                // <li><span></span></li> 구조의 DOM 엘리먼트를 생성
+                let li = document.createElement('li');
+                let span = document.createElement('span');
+                li.append(span);
+                ulTimers.append(li);
+
+                // 초기 텍스트 입력
+                span.innerText = seconds + '초 남음';
+
+                // 객체에 li와 span 태그를 담아서 반환
+                return { li, span }
+            }
+
+            function addTimer(content, seconds) {
+                console.log(`타이머 추가 - 내용(${content}), 시간(${seconds})`);
+
+                // 프로미스 객체를 생성하여 반환
+                return new Promise(function(resolve, reject) {
+                    // 입력 값 유효성 체크 - 유효하지 않은 경우 오류 발생
+                    checkNotEmpty(iContent, '내용을 입력해 주세요');
+                    checkNotEmpty(iSeconds, '시간을 입력해 주세요');
+
+                    let restSeconds = seconds;
+
+                    let { span } = addTimeItem(seconds);
+
+                    // 1초마다 비동기적으로 반복되는 Interval
+                    let interval = setInterval(() => {
+                        if(restSeconds > 0) {
+                            // 시간이 남은 경우
+                            // 1초 감소 시키기
+                            restSeconds = restSeconds - 1;
+                            // 타이머 아이템의 텍스트 수정하기
+                            span.innerText = restSeconds + '초 남음';
+                        } else {
+                            // 타이머의 시간이 모두 소진된 경우 interval 작업 종료 시키기
+                            clearInterval(interval);
+
+                            // Promise의 resolve 호출
+                            resolve(content, seconds, span);
+                        }
+                    }, 1000);
+                });
+            }
+
+            // 버튼에 클릭 이벤트 리스너 설정
+            btnAdd.onclick = function() {
+                console.log('[추가] 버튼 클릭');
+                
+                addTimer(iContent.value, iSeconds.value)
+                    .then(function(content, seconds, span) {
+                        console.log(`콜백 호출 됨 - ${content} - ${seconds}초 타이머`);
+                        // span 태그의 텍스트에 content를 표시하고 (완료) 붙이기
+                        span.innerText = content + "(완료)";
+                    })
+                    .catch(function(error) {
+                        // 오류가 발생한 경우(올바르지 않은 입력 값인 경우)
+                        // checkNotEmpty 함수로부터 예외가 발생한 것을 처리
+                        alert(error.message);
+
+                        // 커서 이동 시키기
+                        if(error.element !== undefined) {
+                            error.element.focus();
+                        }
+                    });
+
+                // 내용 Input의 value 비우기
+                iContent.value = '';
+            }
+        })();
+    </script>
+</body>
+</html>
