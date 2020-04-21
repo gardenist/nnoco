@@ -9,6 +9,13 @@
             font-size: 10pt;
         }
     </style>
+
+    <!-- 무시하셔도 되는 코드 입니다. [시작] -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <!-- 무시하셔도 되는 코드 입니다. [끝] -->
 </head>
 <body>
     <div>
@@ -28,7 +35,7 @@
 
         </ul>
     </div>
-
+     
     <script>
         // 전역 변수를 사용하지 않기 위해 IIFE내에 코드 작성
         (function() {
@@ -118,5 +125,38 @@
             }
         })();
     </script>
+
+
+<!-- 비동기 함수 부분을 Promise로 고쳐보기 문제 설명 -->
+<pre><code class="javascript">
+// 소스코드를 보면 아래와 같이 btnAdd 버튼의 onclick 이벤트 리스너에서 addTimer 함수를 호출하고 있습니다.
+// addTimer 함수가 Promise 객체를 반환하도록 수정하고
+// btnAdd의 onclick 이벤트 리스너에서 Promise를 활용하여 콜백 함수를 addTimer의 파라미터로 전달하는 대신
+// Promise의 then 함수에 콜백을 전달하여 처리하도록 하고, 
+// try/catch 블록으로 작성된 부분을 Promise의 catch를 활용해서 다시 작성해 봅시다.
+btnAdd.onclick = function() {
+    console.log('[추가] 버튼 클릭');
+    // 입력 값이 올바르지 않은 경우 오류가 발생하므로 try/catch로 감싸줌
+    try {
+        addTimer(iContent.value, iSeconds.value, function(content, seconds, span) {
+            console.log(`콜백 호출 됨 - ${content} - ${seconds}초 타이머`);
+            // span 태그의 텍스트에 content를 표시하고 (완료) 붙이기
+            span.innerText = content + "(완료)";
+        });
+
+        // 내용 Input의 value 비우기
+        iContent.value = '';
+    } catch(error) {
+        // 오류가 발생한 경우(올바르지 않은 입력 값인 경우)
+        // checkNotEmpty 함수로부터 예외가 발생한 것을 처리
+        alert(error.message);
+
+        // 커서 이동 시키기
+        if(error.element !== undefined) {
+            error.element.focus();
+        }
+    }
+}
+</code></pre>
 </body>
 </html>

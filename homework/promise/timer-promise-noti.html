@@ -37,6 +37,10 @@
             let iSeconds = document.getElementById('iSeconds');
             let btnAdd = document.getElementById('btnAdd');
 
+            Notification.requestPermission().then(function(result) {
+                console.log(result);
+            })
+
             function checkNotEmpty(element, message) {
                 if(element.value === '') {
                     console.error('값이 입력되지 않아 오류 발생 - ' + element.id);
@@ -99,9 +103,10 @@
             btnAdd.onclick = function() {
                 console.log('[추가] 버튼 클릭');
                 
-                addTimer(iContent.value, iSeconds.value)
-                    .then(function({content, seconds, span}) {
+                addTimer({content, seconds, span})
+                    .then(function(result) {
                         console.log(`콜백 호출 됨 - ${content} - ${seconds}초 타이머`);
+                        console.dir(result);
                         // span 태그의 텍스트에 content를 표시하고 (완료) 붙이기
                         span.innerText = content + "(완료)";
                     })
