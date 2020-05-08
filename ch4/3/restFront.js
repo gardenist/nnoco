@@ -42,6 +42,8 @@ function createEdit(key) {
         // 수정 API 호출하기
         editUser(key, name).then(response => {
             console.log('수정 완료 - ' + key + ', ' + name);
+            return response;
+        }).then(() => {
             getAndRenderUsers();
         });
     });
