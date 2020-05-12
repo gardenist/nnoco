@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Table</title>
+</head>
+<body>
+    <table>
+        <thead>
+
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script>
+        const Gardenist = (function(){
+            var Gardenist = {};
+
+            Gardenist.createComponent = function(name, children, props={}) {
+                let element = document.createElement(name);
+                Object.assign(element, props);
+                if(children) {
+                    if(Array.isArray(children)) {
+                        children.forEach(child => element.appendChild(child));
+                    } else {
+                        element.appendChild(children);
+                    }
+                }
+
+                return element;
+            }
+
+            Gardenist.createText = function(text) {
+                return document.createTextNode(text);
+            }
+
+            Gardenist.td = function(children = [], props = {}) {
+                return Gardenist.createComponent('td', children, props);
+            }
+
+            Gardenist.clear = function(element) {
+                while(element.lastChild) {
+                    element.removeChild(element.lastChild);
+                }
+            }
+
+            return Gardenist;
+        })();
+
+        function initTable(heads, rows) {
+            initHead(document.querySelector('thead'), heads);
+            initBody(document.querySelector('tbody'), rows);
+        }
+
+        function initHead(thead, heads) {
+            Gardenist.clear(thead);
+
+            heads.forEach(head => {
+                thead.appendChild(Gardenist.createComponent('th', 
+                    Gardenist.createText(head.label)
+                ))
+            });
+        }
+
+        function initBody(tbody, rows) {
+            Gardenist.clear(tbody);
+
+            rows.forEach(row => {
+                tbody.appendChild(Gardenist.createComponent('tr', 
+                    Object.keys(row).map(key => {
+                        return Gardenist.createComponent('td', 
+                            Gardenist.createText(row[key])
+                        );
+                    })
+                ));
+            });
+        }
+
+        function head(key, label) {
+            return { key, label };
+        }
+
+        function row(no, id) {
+            return { no, id };
+        }
+
+        initTable([
+            head('no', 'No.'), head('id', 'ID')
+        ], [
+            row(1, 1), 
+            row(2, 2),
+            row(3, 3),
+            row(4, 4),
+        ]);
+
+    </script>
+</body>
+</html>
