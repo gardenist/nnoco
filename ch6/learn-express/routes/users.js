@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+// users/1
+// users/1239
+router.get('/:id', function(req, res) {
+  let userId = req.params.id;
+  console.log(userId);
+
+  res.send(userId);
+});
 
 router.get('/flash', function(req, res) {
   req.session.message = '이 메시지는 세션에 담긴 메시지입니다.';
