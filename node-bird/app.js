@@ -6,7 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 require('dotenv').config();
 
-const pageRouter = require('./routes'); // index.js
+const pageRouter = require('./routes/page'); // index.js
 
 const app = express();
 
