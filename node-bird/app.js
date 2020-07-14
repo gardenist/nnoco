@@ -7,8 +7,10 @@ const flash = require('connect-flash');
 require('dotenv').config();
 
 const pageRouter = require('./routes/page'); // index.js
+const { sequelize } = require('./models');
 
 const app = express();
+sequelize.sync();
 
 /// ..../node-bird/views
 app.set('views', path.join(__dirname, 'views'));
